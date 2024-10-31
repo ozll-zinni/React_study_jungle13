@@ -20,8 +20,10 @@ export default async function RootLayout({ children }) {
           {Array.isArray(posts.data) ? (
             posts.data.map(post => (
               <li key={post._id}>
-                <Link href={`/read/${post._id}`}>{post.title}</Link>
-              </li>
+                <Link href={`/read/${post._id}`} as={`/read/${post._id}`}>
+                    {post.title}
+                </Link>              
+            </li>
             ))
           ) : (
             <li>데이터를 불러오는 데 문제가 있습니다.</li>
