@@ -1,36 +1,36 @@
 'use client';
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from 'react';
+import { useAtom } from "jotai";
+import { postAtom } from "@/app/atom";
 
 export default function Update() {
   const router = useRouter();
   const params = useParams();  
   const id = params.id;
 
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [password, setPassword] = useState(''); 
+  const [post, setPost] = useAtom(postAtom);
+  const [title, setTitle] = useState(post?.title || '');
+  const [body, setBody] = useState(post?.content || '');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     async function fetchTopic() {
       if (!id) return;
 
-      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
-        cache: 'no-cache',
-      });
-      const topic = await resp.json();
-      setTitle(topic.title);
-      setBody(topic.body);
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, { cache: 'no-cache' });
+      const data = await resp.json();
+      setPost(data);
+      setTitle(data.title);
+      setBody(data.content);
     }
 
     fetchTopic();
-  }, [id]);
+  }, [id, setPost]);
 
   return (
     <form onSubmit={async (evt) => {
       evt.preventDefault();
-      const title = evt.target.title.value;
-      const body = evt.target.body.value;
 
       if (!password) {
         alert("비밀번호를 입력하세요.");
@@ -51,12 +51,12 @@ export default function Update() {
       });
 
       if (resp.ok) {
-        const topic = await resp.json();
-        console.log(topic);
+        const updatedPost = await resp.json();
+        setPost(updatedPost);
         router.push(`/read/${id}`);
         router.refresh();
       } else {
-        console.error("Failed to update topic");
+        console.error("Failed to update post");
       }
     }}>
       <h2>Update</h2>

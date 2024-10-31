@@ -2,13 +2,15 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAtom } from "jotai";
+import { postAtom } from "./atom";
 
 export function Control() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;
-
   const [password, setPassword] = useState("");
+  const [, setPost] = useAtom(postAtom);
 
   const handleDelete = async () => {
     if (!password) {
@@ -28,13 +30,12 @@ export function Control() {
         }),
       });
 
-      if (!resp.ok) {
-        throw new Error(`Failed to delete topic with ID: ${id}`);
+      if (resp.ok) {
+        setPost(null);
+        router.push('/');
+      } else {
+        console.error("Failed to delete post");
       }
-
-      router.push('/');
-      router.refresh();
-      console.log("삭제 성공");
     } catch (error) {
       console.error("Delete failed:", error);
       alert("주제 삭제에 실패했습니다. 다시 시도해 주세요.");

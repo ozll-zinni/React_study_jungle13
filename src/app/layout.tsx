@@ -16,6 +16,10 @@ export default async function RootLayout({ children }) {
     <html>
       <body>
         <h1><Link href="/">WEB</Link></h1>
+        {children}
+        {/* Move the Control component here to appear right after the selected post content */}
+        <Control />
+        {/* Post listing */}
         <ol>
           {Array.isArray(posts.data) ? (
             posts.data.map(post => (
@@ -23,14 +27,12 @@ export default async function RootLayout({ children }) {
                 <Link href={`/read/${post._id}`} as={`/read/${post._id}`}>
                     {post.title}
                 </Link>              
-            </li>
+              </li>
             ))
           ) : (
             <li>데이터를 불러오는 데 문제가 있습니다.</li>
           )}
         </ol>
-        {children}
-        <Control />
       </body>
     </html>
   );

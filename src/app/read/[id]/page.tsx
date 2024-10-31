@@ -1,13 +1,14 @@
 'use client';
 
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useAtom } from "jotai";
+import { postAtom } from "@/app/atom";
 
 export default function Read() {
-  const params = useParams();  // React.use() 제거
+  const params = useParams(); 
   const id = params.id;
-
-  const [post, setPost] = useState<{ title: string; user_name: string; created_at: string; } | null>(null);
+  const [post, setPost] = useAtom(postAtom);
 
   useEffect(() => {
     async function fetchPost() {
@@ -21,7 +22,7 @@ export default function Read() {
     }
 
     fetchPost();
-  }, [id]);
+  }, [id, post, setPost]);
 
   if (!post) return <p>Loading...</p>;
 
@@ -30,6 +31,7 @@ export default function Read() {
       <h2>{post.title}</h2>
       <h2>{post.user_name}</h2>
       <p>{post.created_at}</p>
+      <p>{post.content}</p>
     </>
   );
 }
