@@ -1,7 +1,7 @@
 'use client';
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from 'react';
-import { useAtom } from "jotai";
+import { useAtom } from 'jotai';
 import { postAtom } from "@/app/atom";
 
 export default function Update() {
@@ -9,28 +9,32 @@ export default function Update() {
   const params = useParams();  
   const id = params.id;
 
-  const [post, setPost] = useAtom(postAtom);
-  const [title, setTitle] = useState(post?.title || '');
-  const [body, setBody] = useState(post?.content || '');
+  const [posts, setPost] = useAtom(postAtom); // Atom을 가져옵니다.
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
   const [password, setPassword] = useState('');
 
+  // 데이터 가져오기
   useEffect(() => {
-    async function fetchTopic() {
+    async function fetchPost() {
       if (!id) return;
 
-      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, { cache: 'no-cache' });
-      const data = await resp.json();
-      setPost(data);
-      setTitle(data.title);
-      setBody(data.content);
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
+        cache: 'no-cache',
+      });
+      const post = await resp.json();
+      setTitle(post.title);
+      setBody(post.body);
     }
 
-    fetchTopic();
-  }, [id, setPost]);
+    fetchPost();
+  }, [id]);
 
   return (
     <form onSubmit={async (evt) => {
       evt.preventDefault();
+      const title = evt.target.title.value;
+      const body = evt.target.body.value;
 
       if (!password) {
         alert("비밀번호를 입력하세요.");
@@ -43,20 +47,26 @@ export default function Update() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          post_id: id,   
-          title,            
-          content: body,     
+          post_id: id,
+          title,
+          content: body,
           user_password: password,
         }),
       });
 
       if (resp.ok) {
         const updatedPost = await resp.json();
-        setPost(updatedPost);
+        console.log("Updated topic:", updatedPost);
+
+        // Atom에서 주제를 업데이트
+        setPost((prevPosts) =>
+          prevPosts.map((post) => (post._id === id ? updatedPost : post))
+        );
+
         router.push(`/read/${id}`);
         router.refresh();
       } else {
-        console.error("Failed to update post");
+        console.error("Failed to update topic");
       }
     }}>
       <h2>Update</h2>
@@ -78,7 +88,6 @@ export default function Update() {
         />
       </p>
       <p>
-        {/* 비밀번호 입력 필드 추가 */}
         <input 
           type="password" 
           placeholder="비밀번호 입력" 

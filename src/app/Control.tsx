@@ -10,7 +10,7 @@ export function Control() {
   const params = useParams();
   const id = params.id;
   const [password, setPassword] = useState("");
-  const [, setPost] = useAtom(postAtom);
+  const [posts, setPost] = useAtom(postAtom);
 
   const handleDelete = async () => {
     if (!password) {
@@ -20,22 +20,24 @@ export function Control() {
 
     try {
       const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json', 
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          post_id: id,      
-          user_password: password, 
+          post_id: id,
+          user_password: password,
         }),
       });
 
-      if (resp.ok) {
-        setPost(null);
-        router.push('/');
-      } else {
-        console.error("Failed to delete post");
+      if (!resp.ok) {
+        throw new Error(`Failed to delete topic with ID: ${id}`);
       }
+
+      setPost((prevPosts) => prevPosts.filter((post) => post._id !== id));
+      router.push("/");
+      router.refresh();
+      console.log("삭제 성공");
     } catch (error) {
       console.error("Delete failed:", error);
       alert("주제 삭제에 실패했습니다. 다시 시도해 주세요.");
@@ -59,9 +61,7 @@ export function Control() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={handleDelete}>
-              delete
-            </button>
+            <button onClick={handleDelete}>delete</button>
           </li>
         </>
       ) : null}
