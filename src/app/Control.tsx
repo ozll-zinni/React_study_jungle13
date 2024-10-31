@@ -46,23 +46,8 @@ export function Control() {
 
   return (
     <ul>
-      <li>
-        <Link href="/create">create</Link>
-      </li>
       {id ? (
         <>
-          <li>
-            <Link href={`/update/${id}`}>update</Link>
-          </li>
-          <li>
-            <input
-              type="password"
-              placeholder="비밀번호 입력"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleDelete}>delete</button>
-          </li>
         </>
       ) : null}
     </ul>

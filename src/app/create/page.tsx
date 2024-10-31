@@ -34,32 +34,36 @@ export default function Create() {
         
         const newPost = await resp.json();
         
+        // 현재 날짜를 YYYY-MM-DD 형식으로 변환하여 사용
+        const createdDate = new Date().toISOString().split("T")[0]; // "2024-10-31" 형식
+
         const formattedPost = {
           _id: newPost.id,
           title,
           content,
           user_name,
-          created_at: new Date().toISOString(),
+          created_at: createdDate, // 변환된 날짜 형식 사용
         };
 
+        // 새 게시글을 로컬 상태에 추가
         setPost(prevPosts => [...prevPosts, formattedPost]);
-        
-        const updatedPostsResp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/list`);
-        const updatedPosts = await updatedPostsResp.json();
-        setPost(updatedPosts.data);
 
+        // 생성된 게시글 페이지로 이동
         router.push(`/read/${newPost.id}`);
         router.refresh();
       } catch (error) {
         console.error('Error creating post:', error);
       }
     }}>
-      <h2>Create</h2>
       <p><input type="text" name="title" placeholder="title" /></p>
       <p><input type="text" name="user_name" placeholder="user_name" /></p>
       <p><input type="password" name="user_password" placeholder="user_password" /></p>
       <p><textarea name="content" placeholder="content"></textarea></p>
-      <p><input type="submit" value="create" /></p>
+      <p>
+        <button type="submit" className="w-full bg-[#6c7a89] text-white py-2 rounded hover:bg-[#5c6a79] transition-colors">
+          Write
+        </button>
+      </p>
     </form>
-);
-  }
+  );
+}
