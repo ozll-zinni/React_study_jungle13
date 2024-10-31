@@ -11,11 +11,14 @@ export default function Create() {
   return (
     <form onSubmit={async (evt) => {
       evt.preventDefault();
-      const title = evt.target.title.value;
-      const content = evt.target.content.value;
-      const user_name = evt.target.user_name.value;
-      const user_password = evt.target.user_password.value;
-      
+      const target = evt.target as HTMLFormElement;
+    
+      const title = (target.elements.namedItem('title') as HTMLInputElement).value;
+      const content = (target.elements.namedItem('content') as HTMLTextAreaElement).value;
+      const user_name = (target.elements.namedItem('user_name') as HTMLInputElement).value;
+      const user_password = (target.elements.namedItem('user_password') as HTMLInputElement).value;
+    
+
       if (title.length < 10) {
         alert("제목은 10글자 이상이어야 합니다.");
         return;

@@ -30,7 +30,11 @@ export default function Home() {
                 </Link>
               </td>
               <td className="py-3 text-right">
-                {new Date(post.created_at).toLocaleDateString()}
+                {new Date(post.created_at).toLocaleDateString("ko-KR", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })}
               </td>
             </tr>
           ))}
