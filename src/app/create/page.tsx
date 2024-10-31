@@ -15,6 +15,11 @@ export default function Create() {
       const content = evt.target.content.value;
       const user_name = evt.target.user_name.value;
       const user_password = evt.target.user_password.value;
+      
+      if (title.length < 10) {
+        alert("제목은 10글자 이상이어야 합니다.");
+        return;
+      }
 
       try {
         const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts`, {
@@ -25,7 +30,7 @@ export default function Create() {
           body: JSON.stringify({ title, content, user_name, user_password }),
         });
         
-        if (!resp.ok) throw new Error('Failed to create post');
+        if (!resp.ok) throw new Error('게시글 생성에 실패했습니다.');
         
         const newPost = await resp.json();
         
