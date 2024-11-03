@@ -17,6 +17,12 @@
       "title": "새로운 게시글입니다2",
       "content": "1",
       "user_name": "1"
+    },
+    {
+      "id": "ad25",
+      "title": "새로운 게시글입니다3",
+      "content": "1",
+      "user_name": "1"
     }
   ]
 }

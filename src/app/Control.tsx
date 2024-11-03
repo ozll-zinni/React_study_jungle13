@@ -1,10 +1,12 @@
+// Control.tsx
+
 'use client';
 
 import { useRouter, useParams } from "next/navigation";
 import { useAtom } from "jotai";
 import { postAtom } from "./atom";
 
-export function Control() {
+export default function Control() {
   const router = useRouter();
   const params = useParams();
   const id = params.id;

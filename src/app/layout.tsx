@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import './globals.css';
-import { Control } from './Control';
 import { PostsProvider } from './postsProvider';
 
 export const metadata = {
@@ -30,12 +29,9 @@ export default async function RootLayout({
         <div className="max-w-4xl mx-auto p-8">
           {/* Header */}
           <div className="flex justify-between items-center mb-12">
-            {/* Board Title */}
             <h1 className="text-4xl font-bold text-[#2d4356]">
               <Link href="/">Board</Link>
             </h1>
-
-            {/* Write Button */}
             <Link href="/create">
               <button className="bg-[#6c7a89] text-white py-2 px-4 rounded hover:bg-[#5c6a79] transition-colors">
                 Write
@@ -47,7 +43,6 @@ export default async function RootLayout({
           <div className="bg-white rounded-lg shadow-md p-6">
             <PostsProvider initialPosts={formattedPosts.data}>
               {children}
-              <Control />
             </PostsProvider>
           </div>
         </div>
