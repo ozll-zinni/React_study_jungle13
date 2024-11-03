@@ -2,6 +2,8 @@
 
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react';
+import { useAtom } from "jotai";
+import { postAtom } from "@/app/atom";
 import Link from 'next/link';
 
 export default function Read() {
@@ -9,15 +11,17 @@ export default function Read() {
   const { id } = useParams();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [password, setPassword] = useState("");
+
+  const [posts, setPosts] = useAtom(postAtom);
 
   useEffect(() => {
     async function fetchPost() {
       try {
+        console.log(`Fetching post from ${process.env.NEXT_PUBLIC_API_URL}posts/${id}`);
         const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
           cache: 'no-store'
         });
-        if (!resp.ok) throw new Error('Failed to fetch post');
+        if (!resp.ok) throw new Error(`Failed to fetch post, status: ${resp.status}`);
         const data = await resp.json();
         setPost(data);
       } catch (error) {
@@ -26,30 +30,25 @@ export default function Read() {
         setLoading(false);
       }
     }
-
     fetchPost();
   }, [id]);
 
   const handleDelete = async () => {
-    if (!password) {
-      alert("비밀번호를 입력하세요.");
-      return;
-    }
-
     if (window.confirm('정말로 삭제하시겠습니까?')) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            post_id: id,
-            user_password: password,
-          }),
         });
 
         if (!response.ok) throw new Error('Failed to delete post');
+
+        // 삭제된 게시물을 상태에서 제거
+        setPosts((prevPosts) => prevPosts.filter((p) => p.id !== id));
+
+        // 목록 페이지로 이동
         router.push('/');
       } catch (error) {
         console.error('Error deleting post:', error);
@@ -65,12 +64,10 @@ export default function Read() {
     <>
       <h2 className="text-2xl text-[#2d4356] mb-8">{post.title}</h2>
       
-      {/* Post Content */}
       <div className="mb-8 min-h-[100px]">
         <p>{post.content}</p>
       </div>
 
-      {/* Action Buttons */}
       <div className="grid grid-cols-2 gap-4">
         <Link 
           href={`/update/${id}`} 
@@ -79,22 +76,12 @@ export default function Read() {
           Modify
         </Link>
         
-        {/* Password Input and Delete Button */}
-        <div className="flex items-center flex-1">
-          <input
-            type="password"
-            placeholder="비밀번호 입력"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border rounded p-2 mr-2 flex-1"
-          />
-          <button 
-            onClick={handleDelete} 
-            className="bg-[#FFA7AF] text-white py-2 rounded hover:bg-[#FF8C9A] transition-colors flex-1"
-          >
-            Delete
-          </button>
-        </div>
+        <button 
+          onClick={handleDelete} 
+          className="bg-[#FFA7AF] text-white py-2 rounded hover:bg-[#FF8C9A] transition-colors flex-1"
+        >
+          Delete
+        </button>
       </div>
     </>
   );

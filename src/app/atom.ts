@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 
 // post 데이터를 위한 atom
 interface Post {
-  _id: string;
+  id: string;
   title: string;
   content?: string;
   user_name?: string;

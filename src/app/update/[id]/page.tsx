@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
@@ -12,7 +13,6 @@ export default function Update() {
   const [post, setPost] = useAtom(postAtom); 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [password, setPassword] = useState('');
 
   useEffect(() => {
     async function fetchPost() {
@@ -37,36 +37,24 @@ export default function Update() {
   }, [id]);
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
+    <>
       <h2 className="text-2xl font-bold text-[#2d4356] mb-4">Update</h2>
 
       <form 
         onSubmit={async (evt) => {
           evt.preventDefault();
 
-          if (!password) {
-            alert("비밀번호를 입력하세요.");
-            return;
-          }
-
           try {
-            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts`, {
+            const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                post_id: id,
                 title,
                 content: body,
-                user_password: password,
               }),
             });
-
-            if (resp.status === 401) {
-              alert("비밀번호가 틀렸습니다. 다시 시도해 주세요.");
-              return;
-            }
 
             if (!resp.ok) {
               alert(`업데이트에 실패했습니다. 오류 코드: ${resp.status}`);
@@ -77,7 +65,7 @@ export default function Update() {
             console.log("Updated post:", updatedPost);
 
             setPost((prevPosts) =>
-              prevPosts.map((post) => (post._id === id ? updatedPost : post))
+              prevPosts.map((post) => (post.id === id ? updatedPost : post))
             );
 
             router.push(`/read/${id}`);
@@ -109,22 +97,13 @@ export default function Update() {
           />
         </div>
 
-        <div className="flex items-center gap-2 mb-4">
-          <input 
-            type="password" 
-            placeholder="비밀번호 입력" 
-            onChange={e => setPassword(e.target.value)} 
-            value={password}
-            className="w-full text-gray-500 bg-gray-100 py-2 px-4 rounded-md border border-gray-300 focus:outline-none"
-          />
-          <button 
-            type="submit"
-            className="bg-[#6c7a89] text-white py-2 px-4 rounded-md hover:bg-[#5c6a79] transition-colors"
-          >
-            Update
-          </button>
-        </div>
+        <button 
+          type="submit"
+          className="bg-[#6c7a89] text-white py-2 px-4 rounded-md hover:bg-[#5c6a79] transition-colors"
+        >
+          Update
+        </button>
       </form>
-    </div>
+    </>
   );
 }
