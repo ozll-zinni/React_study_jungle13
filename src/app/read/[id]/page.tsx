@@ -3,12 +3,15 @@
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useAtom } from 'jotai';
+import { postAtom } from "@/app/atom";
 
 export default function Read() {
   const router = useRouter();
   const { id } = useParams();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useAtom(postAtom);
 
   useEffect(() => {
     async function fetchPost() {
@@ -39,8 +42,12 @@ export default function Read() {
         });
 
         if (!response.ok) throw new Error('Failed to delete post');
+        
+        // postAtom에서 삭제된 게시물을 필터링하여 상태 업데이트
+        setPosts((prevPosts) => prevPosts.filter((p) => p.id !== id));
+
+        // 목록 페이지로 이동
         router.push('/');
-        router.refresh();
       } catch (error) {
         console.error('Error deleting post:', error);
         alert('삭제 중 오류가 발생했습니다.');
