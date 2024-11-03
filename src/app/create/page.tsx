@@ -12,11 +12,11 @@ export default function Create() {
     <form onSubmit={async (evt) => {
       evt.preventDefault();
       const target = evt.target as HTMLFormElement;
-    
+
       const title = (target.elements.namedItem('title') as HTMLInputElement).value;
       const content = (target.elements.namedItem('content') as HTMLTextAreaElement).value;
       const user_name = (target.elements.namedItem('user_name') as HTMLInputElement).value;
-    
+
       if (title.length < 10) {
         alert("제목은 10글자 이상이어야 합니다.");
         return;
@@ -30,26 +30,21 @@ export default function Create() {
           },
           body: JSON.stringify({ title, content, user_name }),
         });
-        
+
         if (!resp.ok) throw new Error('게시글 생성에 실패했습니다.');
-        
+
         const newPost = await resp.json();
-        
-        // 현재 날짜를 YYYY-MM-DD 형식으로 변환하여 사용
-        const createdDate = new Date().toISOString().split("T")[0];
+        const createdDate = new Date().toISOString(); // ISO 형식
 
         const formattedPost = {
           id: newPost.id,
           title,
           content,
           user_name,
-          created_at: createdDate,
+          created_at: createdDate, // ISO 형식 사용
         };
 
-        // 새 게시글을 로컬 상태에 추가
         setPost((prevPosts = []) => [...prevPosts, formattedPost]);
-
-        // 생성된 게시글 페이지로 이동
         router.push(`/read/${newPost.id}`);
         router.refresh();
       } catch (error) {

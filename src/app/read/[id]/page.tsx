@@ -2,8 +2,6 @@
 
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react';
-import { useAtom } from "jotai";
-import { postAtom } from "@/app/atom";
 import Link from 'next/link';
 
 export default function Read() {
@@ -12,12 +10,9 @@ export default function Read() {
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const [posts, setPosts] = useAtom(postAtom);
-
   useEffect(() => {
     async function fetchPost() {
       try {
-        console.log(`Fetching post from ${process.env.NEXT_PUBLIC_API_URL}posts/${id}`);
         const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
           cache: 'no-store'
         });
@@ -44,12 +39,8 @@ export default function Read() {
         });
 
         if (!response.ok) throw new Error('Failed to delete post');
-
-        // 삭제된 게시물을 상태에서 제거
-        setPosts((prevPosts) => prevPosts.filter((p) => p.id !== id));
-
-        // 목록 페이지로 이동
         router.push('/');
+        router.refresh();
       } catch (error) {
         console.error('Error deleting post:', error);
         alert('삭제 중 오류가 발생했습니다.');
