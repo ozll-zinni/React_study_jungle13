@@ -22,10 +22,10 @@ export default function Home() {
         </thead>
         <tbody>
           {posts && posts.map((post: any, index: number) => (
-            <tr key={`${post._id}-${index}`} className="border-b hover:bg-gray-50">
+            <tr key={`${post.id}-${index}`} className="border-b hover:bg-gray-50">
               <td className="py-3">{posts.length - index}</td>
               <td className="py-3">
-                <Link href={`/read/${post._id}`} className="hover:underline">
+                <Link href={`/read/${post.id}`} className="hover:underline">
                   {post.title}
                 </Link>
               </td>

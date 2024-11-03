@@ -1,27 +1,11 @@
 {
   "posts": [
     {
-      "id": "1",
-      "title": "첫 번째 게시글",
-      "content": "이것은 첫 번째 게시글의 내용입니다.",
-      "user_name": "작성자1",
-      "user_password": "비밀번호1",
-      "created_at": "2024-11-03T15:14:33.772Z"
-    },
-    {
-      "id": "2",
-      "title": "두 번째 게시글",
-      "content": "이것은 두 번째 게시글의 내용입니다.",
-      "user_name": "작성자2",
-      "user_password": "비밀번호2",
-      "created_at": "2024-11-03T15:15:00.123Z"
-    },
-    {
-      "id": "51fb",
-      "title": "12345678910",
+      "id": "5f04",
+      "title": "첫 번째 테스트입니다.",
       "content": "test",
       "user_name": "test",
-      "user_password": "test"
+      "user_password": "teest"
     }
   ]
 }
