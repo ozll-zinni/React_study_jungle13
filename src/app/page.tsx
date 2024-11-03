@@ -23,7 +23,7 @@ export default function Home() {
         <tbody>
           {posts && posts.map((post: any, index: number) => (
             <tr key={`${post.id}-${index}`} className="border-b hover:bg-gray-50">
-              <td className="py-3">{posts.length - index}</td>
+              <td className="py-3">{index + 1}</td>
               <td className="py-3">
                 <Link href={`/read/${post.id}`} className="hover:underline">
                   {post.title}
@@ -36,7 +36,7 @@ export default function Home() {
                     month: "2-digit",
                     day: "2-digit",
                   }) 
-                  : new Date().toLocaleDateString("ko-KR", { // 기본값 설정
+                  : new Date().toLocaleDateString("ko-KR", {
                     year: "numeric",
                     month: "2-digit",
                     day: "2-digit",
@@ -44,7 +44,8 @@ export default function Home() {
                 }
               </td>
             </tr>
-          ))}
+          ))
+          .reverse()}
         </tbody>
       </table>
     </div>
