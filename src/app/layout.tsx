@@ -14,10 +14,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}posts/list`,
+    `${process.env.NEXT_PUBLIC_API_URL}posts`,
     { cache: 'no-store' }
   );
+
+  // Fetch 응답에서 posts 데이터 추출
   const posts = await resp.json();
+
+  // posts 데이터를 { data: posts } 형식으로 가공
+  const formattedPosts = { data: posts };
 
   return (
     <html>
@@ -40,7 +45,7 @@ export default async function RootLayout({
 
           {/* Main Content */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <PostsProvider initialPosts={posts.data}>
+            <PostsProvider initialPosts={formattedPosts.data}>
               {children}
               <Control />
             </PostsProvider>

@@ -49,7 +49,7 @@ export default function Create() {
         };
 
         // 새 게시글을 로컬 상태에 추가
-        setPost(prevPosts => [...prevPosts, formattedPost]);
+        setPost((prevPosts = []) => [...prevPosts, formattedPost]);
 
         // 생성된 게시글 페이지로 이동
         router.push(`/read/${newPost.id}`);
