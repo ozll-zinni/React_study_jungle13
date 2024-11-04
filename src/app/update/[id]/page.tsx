@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
@@ -7,55 +8,48 @@ import { postAtom } from "@/app/atom";
 export default function Update() {
   const router = useRouter();
   const params = useParams();  
-  const id = params.id;
+  const id = typeof params.id === 'string' ? params.id : '';
 
-  const [post, setPost] = useAtom(postAtom); 
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [posts, setPosts] = useAtom(postAtom); 
+  const [title, setTitle] = useState<string>(''); // 초기값을 빈 문자열로 설정
+  const [content, setContent] = useState<string>(''); // 초기값을 빈 문자열로 설정
 
   useEffect(() => {
-    async function fetchPost() {
-      if (!id) return;
-      try {
-        const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, { cache: 'no-cache' });
-        if (!resp.ok) throw new Error("Failed to fetch post");
-        const post = await resp.json();
-        setTitle(post.title);
-        setBody(post.body);
-      } catch (error) {
-        console.error("Error fetching post:", error);
-      }
+    const post = posts?.find((p) => p.id === id);
+    if (post) {
+      setTitle(post.title ?? ''); // title이 undefined일 경우 빈 문자열로 설정
+      setContent(post.content ?? ''); // content가 undefined일 경우 빈 문자열로 설정
     }
-    fetchPost();
-  }, [id]);
+  }, [id, posts]);
+
+  const handleUpdate = (evt: React.FormEvent) => {
+    evt.preventDefault();
+    const updatedPost = { id, title, content };
+
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === id ? updatedPost : post))
+    );
+
+    router.push(`/read/${id}`);
+    router.refresh();
+  };
 
   return (
-    <form 
-      onSubmit={async (evt) => {
-        evt.preventDefault();
-        try {
-          const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, content: body }),
-          });
-          if (!resp.ok) {
-            alert(`업데이트에 실패했습니다. 오류 코드: ${resp.status}`);
-            return;
-          }
-          const updatedPost = await resp.json();
-          setPost((prevPosts) => prevPosts.map((post) => (post.id === id ? updatedPost : post)));
-          router.push(`/read/${id}`);
-          router.refresh();
-        } catch (error) {
-          console.error("Failed to update post:", error);
-          alert("업데이트 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-      }}
-    >
-      <input type="text" placeholder="title" value={title} onChange={e => setTitle(e.target.value)} />
-      <textarea placeholder="body" value={body} onChange={e => setBody(e.target.value)} />
-      <button type="submit">Update</button>
+    <form onSubmit={handleUpdate}>
+      <input
+        type="text"
+        placeholder="title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="input-field"
+      />
+      <textarea
+        placeholder="content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        className="textarea-field"
+      />
+      <button type="submit" className="submit-button">Update</button>
     </form>
   );
 }

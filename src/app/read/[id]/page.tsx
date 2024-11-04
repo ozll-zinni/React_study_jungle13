@@ -14,36 +14,18 @@ export default function Read() {
   const [posts, setPosts] = useAtom(postAtom);
 
   useEffect(() => {
-    async function fetchPost() {
-      try {
-        const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
-          cache: 'no-store'
-        });
-        if (!resp.ok) throw new Error(`Failed to fetch post, status: ${resp.status}`);
-        const data = await resp.json();
-        setPost(data);
-      } catch (error) {
-        console.error('Error fetching post:', error);
-      } finally {
-        setLoading(false);
-      }
+    // posts에서 id에 해당하는 게시물을 찾아 설정
+    const foundPost = posts?.find((p) => p.id === id);
+    if (foundPost) {
+      setPost(foundPost);
     }
-    fetchPost();
-  }, [id]);
+    setLoading(false);
+  }, [id, posts]);
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (window.confirm('정말로 삭제하시겠습니까?')) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) throw new Error('Failed to delete post');
-        
-        // postAtom에서 삭제된 게시물을 필터링하여 상태 업데이트
+        // postAtom에서 해당 게시물 제거
         setPosts((prevPosts) => prevPosts.filter((p) => p.id !== id));
 
         // 목록 페이지로 이동
@@ -69,14 +51,14 @@ export default function Read() {
       <div className="grid grid-cols-2 gap-4">
         <Link 
           href={`/update/${id}`} 
-          className="bg-[#6c7a89] text-white py-2 rounded hover:bg-[#5c6a79] transition-colors text-center"
+          className="modify-button"
         >
           Modify
         </Link>
         
         <button 
           onClick={handleDelete} 
-          className="bg-[#FFA7AF] text-white py-2 rounded hover:bg-[#FF8C9A] transition-colors flex-1"
+          className="delete-button"
         >
           Delete
         </button>

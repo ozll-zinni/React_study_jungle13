@@ -9,7 +9,7 @@ export default function Create() {
   const [posts, setPost] = useAtom(postAtom);
 
   return (
-    <form onSubmit={async (evt) => {
+    <form onSubmit={(evt) => {
       evt.preventDefault();
       const target = evt.target as HTMLFormElement;
 
@@ -22,40 +22,25 @@ export default function Create() {
         return;
       }
 
-      try {
-        const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}posts`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ title, content, user_name }),
-        });
+      const createdDate = new Date().toISOString();
+      const newPost = {
+        id: (posts ? posts.length + 1 : 1).toString(),
+        title,
+        content,
+        user_name,
+        created_at: createdDate,
+      };
 
-        if (!resp.ok) throw new Error('게시글 생성에 실패했습니다.');
+      setPost((prevPosts = []) => [...prevPosts, newPost]);
 
-        const newPost = await resp.json();
-        const createdDate = new Date().toISOString(); // ISO 형식
-
-        const formattedPost = {
-          id: newPost.id,
-          title,
-          content,
-          user_name,
-          created_at: createdDate, // ISO 형식 사용
-        };
-
-        setPost((prevPosts = []) => [...prevPosts, formattedPost]);
-        router.push(`/read/${newPost.id}`);
-        router.refresh();
-      } catch (error) {
-        console.error('Error creating post:', error);
-      }
+      router.push(`/read/${newPost.id}`);
+      router.refresh();
     }}>
       <p><input type="text" name="title" placeholder="title" /></p>
       <p><input type="text" name="user_name" placeholder="user_name" /></p>
       <p><textarea name="content" placeholder="content"></textarea></p>
       <p>
-        <button type="submit" className="w-full bg-[#6c7a89] text-white py-2 rounded hover:bg-[#5c6a79] transition-colors">
+        <button type="submit" className="submit-button">
           Write
         </button>
       </p>

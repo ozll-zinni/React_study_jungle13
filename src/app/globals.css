@@ -1,15 +1,190 @@
-/* globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+.submit-button {
+  width: 100%;
+  background-color: #6c7a89;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 
-a {
+.submit-button:hover {
+  background-color: #5c6a79;
+}
+
+.modify-button {
+  background-color: #6c7a89;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  width: 100%;
+}
+
+.modify-button:hover {
+  background-color: #5c6a79;
+}
+
+.delete-button {
+  background-color: #FFA7AF;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+}
+
+.delete-button:hover {
+  background-color: #FF8C9A;
+}
+
+.input-field,
+.textarea-field {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.input-field:focus,
+.textarea-field:focus {
+  outline: none;
+  border-color: #6c7a89;
+}
+
+.submit-button {
+  background-color: #6c7a89;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #5c6a79;
+}
+
+.board-list {
+  margin: 20px;
+}
+
+.board-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2d4356;
+  margin-bottom: 1rem;
+}
+
+.post-count {
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
+
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.post-header {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.no-col {
+  width: 50px;
+}
+
+.title-col {
+  text-align: left;
+}
+
+.date-col {
+  width: 120px;
+  text-align: right;
+}
+
+.post-row {
+  border-bottom: 1px solid #ddd;
+}
+
+.post-data {
+  padding: 0.75rem;
+}
+
+.post-row:hover {
+  background-color: #f9fafb;
+}
+
+.post-link {
+  color: #2c5282;
   text-decoration: none;
-  color: inherit;
+}
+
+.post-link:hover {
+  text-decoration: underline;
+}
+/* globals.css */
+
+/* Body Background */
+.main-body {
+  background-color: #f5e6ba;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Main Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+/* Title */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2d4356;
+  text-decoration: none;
+}
+
+/* Write Button */
+.write-button {
+  background-color: #6c7a89;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.write-button:hover {
+  background-color: #5c6a79;
+}
+
+/* Content Container */
+.content {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
