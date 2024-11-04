@@ -1,65 +1,53 @@
-.submit-button {
-  width: 100%;
-  background-color: #6c7a89;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.3s ease;
-  border: none;
-  cursor: pointer;
+/* Body Background */
+.main-body {
+  background-color: #f5e6ba;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
-.submit-button:hover {
-  background-color: #5c6a79;
+/* Main Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.modify-button {
-  background-color: #6c7a89;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.3s ease;
-  text-align: center;
-  display: inline-block;
-  cursor: pointer;
-  width: 100%;
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
 }
 
-.modify-button:hover {
-  background-color: #5c6a79;
+/* Title */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2d4356;
+  text-decoration: none;
 }
 
-.delete-button {
-  background-color: #FFA7AF;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-  width: 100%;
+/* Kanban Board Styles */
+.kanban-board {
+  display: flex; /* Use flexbox to arrange columns side by side */
+  justify-content: space-between; /* Distribute columns evenly */
+  margin: 20px 0; /* Margin for spacing around the board */
 }
 
-.delete-button:hover {
-  background-color: #FF8C9A;
+.kanban-column {
+  flex: 1; /* Allow columns to grow equally */
+  margin: 0 10px; /* Space between columns */
+  background-color: #f7f7f7; /* Background color for each column */
+  border-radius: 8px; /* Rounded corners */
+  padding: 16px; /* Padding inside columns */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
-.input-field,
-.textarea-field {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  margin-bottom: 1rem;
-}
-
-.input-field:focus,
-.textarea-field:focus {
-  outline: none;
-  border-color: #6c7a89;
-}
-
-.submit-button {
-  background-color: #6c7a89;
+/* Write Button */
+.write-button {
+  background-color: #6c7a89; /* Specific color for Write button */
   color: white;
   padding: 0.5rem 1rem;
   border: none;
@@ -68,12 +56,130 @@
   transition: background-color 0.3s ease;
 }
 
-.submit-button:hover {
+.write-button:hover {
   background-color: #5c6a79;
 }
 
+/* Common Button Styles */
+.button {
+  padding: 0.5rem; /* Shared padding */
+  border-radius: 0.25rem; /* Shared border radius */
+  transition: background-color 0.3s ease; /* Shared transition */
+  cursor: pointer; /* Shared cursor */
+  font-size: 1rem; /* Shared font size */
+  color: white; /* Default text color */
+}
+/* Status and Update Button Container */
+.status-update-container {
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Vertically center items */
+  gap: 0.5rem; /* Space between select and button */
+  margin-top: 1rem; /* Margin at the top for spacing */
+}
+
+/* Select Field */
+select {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
+}
+/* Modify and Delete Button Styles */
+.modify-button, .delete-button {
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.25rem; 
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+  box-sizing: border-box; 
+  font-size: 1rem; 
+  color: white; 
+  text-decoration: none;
+}
+
+/* Modify Button */
+.modify-button {
+  background-color: #6c7a89; 
+  border: none; 
+}
+
+.modify-button:hover {
+  background-color: #5c6a79; 
+}
+
+/* Delete Button */
+.delete-button {
+  background-color: #FFA7AF; 
+  border: none;
+}
+
+.delete-button:hover {
+  background-color: #FF8C9A; 
+}
+
+/* Parent container for button alignment */
+.button-container {
+  display: flex; 
+  justify-content: space-between;
+  gap: 1rem; 
+}
+/* Form Group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+/* Form Label */
+.form-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #2d4356; /* Matching color to align with other text */
+}
+/* Generic Button Styles */
+.button {
+  background-color: #6c7a89; 
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+}
+
+.button:hover {
+  background-color: #5c6a79;
+}
+
+/* Input Fields */
+.input-field,
+.textarea-field {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  background-color: #fffcf4;
+}
+
+.input-field:focus,
+.textarea-field:focus {
+  outline: none;
+  border-color: #6c7a89;
+}
+
+/* Board List Styles */
 .board-list {
-  margin: 20px;
+  margin: 20px 0; /* Space around the board list */
 }
 
 .board-title {
@@ -81,6 +187,7 @@
   font-weight: bold;
   color: #2d4356;
   margin-bottom: 1rem;
+  text-decoration: none;
 }
 
 .post-count {
@@ -89,6 +196,7 @@
   margin-bottom: 1rem;
 }
 
+/* Post Table Styles */
 .post-table {
   width: 100%;
   border-collapse: collapse;
@@ -125,66 +233,41 @@
   background-color: #f9fafb;
 }
 
+/* Post Link Styles */
 .post-link {
   color: #2c5282;
   text-decoration: none;
 }
 
 .post-link:hover {
-  text-decoration: underline;
-}
-/* globals.css */
-
-/* Body Background */
-.main-body {
-  background-color: #f5e6ba;
-  min-height: 100vh;
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-/* Main Container */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
-}
-
-/* Title */
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #2d4356;
   text-decoration: none;
 }
-
-/* Write Button */
-.write-button {
-  background-color: #6c7a89;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.link-no-underline {
+  text-decoration: none;
+  color: inherit; /* Keep the text color the same as the parent element */
 }
 
-.write-button:hover {
-  background-color: #5c6a79;
+.link-no-underline:hover {
+  text-decoration: none; /* Make sure there's no underline on hover as well */
 }
-
 /* Content Container */
 .content {
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
+}
+
+/* Kanban Card Styles */
+.kanban-card {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 8px 0; /* Space between cards */
+  padding: 10px; /* Padding inside cards */
+  transition: background-color 0.3s;
+}
+
+.kanban-card:hover {
+  background-color: #f0f0f0; /* Change on hover */
 }

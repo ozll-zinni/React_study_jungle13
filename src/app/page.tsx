@@ -1,74 +1,74 @@
-// src/app/page.tsx
 'use client';
 
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { postAtom } from './atom';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   const [posts, setPosts] = useAtom(postAtom);
 
-  // JSON 파일에서 데이터를 가져오는 함수
   const fetchPosts = async () => {
     try {
-      const response = await fetch('/db.json'); // public 디렉토리의 db.json 파일 경로
+      const response = await fetch('/db.json');
       const data = await response.json();
-      setPosts(data.posts); // 가져온 데이터를 Jotai 상태로 설정
+      setPosts(data.posts);
     } catch (error) {
       console.error('Failed to load posts:', error);
     }
   };
 
   useEffect(() => {
-    // posts가 비어 있을 때만 fetch 실행
     if (!posts || posts.length === 0) {
       fetchPosts();
     }
   }, [posts, setPosts]);
 
+  const groupedPosts = {
+    'Not Started': posts.filter(post => post.status === 'Not Started'),
+    'In Progress': posts.filter(post => post.status === 'In Progress'),
+    'Done': posts.filter(post => post.status === 'Done')
+  };
+
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-[#2d4356]">Board list</h2>
-      
-      <p className="text-sm text-gray-600 mb-4">Total post : {posts ? posts.length : 0}</p>
-      <table className="w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2 text-left w-20">No</th>
-            <th className="py-2 text-left">Title</th>
-            <th className="py-2 text-right w-32">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts && posts
-            .map((post: any, index: number) => (
-              <tr key={`${post.id}-${index}`} className="border-b hover:bg-gray-50">
-                <td className="py-3">{index + 1}</td>
-                <td className="py-3">
-                  <Link href={`/read/${post.id}`} className="hover:underline">
-                    {post.title}
-                  </Link>
-                </td>
-                <td className="py-3 text-right">
-                  {post.created_at ? 
-                    new Date(post.created_at).toLocaleDateString("ko-KR", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    }) 
-                    : new Date().toLocaleDateString("ko-KR", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })
-                  }
-                </td>
-              </tr>
-            ))
-            .reverse()}
-        </tbody>
-      </table>
+    <div className="kanban-board">
+      <div className="kanban-column">
+        <h2 className="board-title">Not Started ({groupedPosts['Not Started'].length})</h2>
+        {groupedPosts['Not Started'].map((post) => (
+          <div key={post.id} className="kanban-card">
+            <Link href={`/read/${post.id}`} className="post-link">
+              {post.title}
+            </Link>
+          </div>
+        ))}
+        <button className="write-button" onClick={() => router.push('/create?status=Not%20Started')}>Write</button>
+      </div>
+
+      <div className="kanban-column">
+        <h2 className="board-title">In Progress ({groupedPosts['In Progress'].length})</h2>
+        {groupedPosts['In Progress'].map((post) => (
+          <div key={post.id} className="kanban-card">
+            <Link href={`/read/${post.id}`} className="post-link">
+              {post.title}
+            </Link>
+          </div>
+        ))}
+        <button className="write-button" onClick={() => router.push('/create?status=In%20Progress')}>Write</button>
+      </div>
+
+      <div className="kanban-column">
+        <h2 className="board-title">Done ({groupedPosts['Done'].length})</h2>
+        {groupedPosts['Done'].map((post) => (
+          <div key={post.id} className="kanban-card">
+            <Link href={`/read/${post.id}`} className="post-link">
+              {post.title}
+            </Link>
+          </div>
+        ))}
+        <button className="write-button" onClick={() => router.push('/create?status=Done')}>Write</button>
+      </div>
     </div>
   );
 }

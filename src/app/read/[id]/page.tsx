@@ -48,7 +48,7 @@ export default function Read() {
         <p>{post.content}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="button-group">
         <Link 
           href={`/update/${id}`} 
           className="modify-button"
