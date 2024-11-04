@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { postAtom } from "../atom";
 import { Post } from "@/app/atom";
 import { v4 as uuidv4 } from 'uuid';
+import { Suspense } from 'react';
 
 export default function Create() {
   const router = useRouter();
@@ -40,20 +41,22 @@ export default function Create() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="title" className="form-label">ToDo</label>
-        <input type="text" id="title" name="title" className="input-field" placeholder="할일을 작성해주세요" />
-      </div>
-      
-      <div className="form-group">
-        <label htmlFor="content" className="form-label">Detail</label>
-        <textarea id="content" name="content" className="textarea-field" placeholder="상세 내용"></textarea>
-      </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="title" className="form-label">ToDo</label>
+          <input type="text" id="title" name="title" className="input-field" placeholder="할일을 작성해주세요" />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="content" className="form-label">Detail</label>
+          <textarea id="content" name="content" className="textarea-field" placeholder="상세 내용"></textarea>
+        </div>
 
-      <div className="button-container">
-        <button type="submit" className="write-button">Write</button>
-      </div>
-    </form>
+        <div className="button-container">
+          <button type="submit" className="write-button">Write</button>
+        </div>
+      </form>
+    </Suspense>
   );
 }
