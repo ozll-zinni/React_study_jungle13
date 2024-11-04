@@ -9,11 +9,9 @@ import { Suspense } from 'react';
 
 export default function Create() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const statusParam = searchParams.get('status') as 'Not Started' | 'In Progress' | 'Done' || 'Not Started';
   const [posts, setPost] = useAtom(postAtom);
 
-  const handleSubmit = (evt: React.FormEvent) => {
+  const handleSubmit = (evt: React.FormEvent, statusParam: 'Not Started' | 'In Progress' | 'Done') => {
     evt.preventDefault();
     const target = evt.target as HTMLFormElement;
 
@@ -42,21 +40,30 @@ export default function Create() {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title" className="form-label">ToDo</label>
-          <input type="text" id="title" name="title" className="input-field" placeholder="할일을 작성해주세요" />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="content" className="form-label">Detail</label>
-          <textarea id="content" name="content" className="textarea-field" placeholder="상세 내용"></textarea>
-        </div>
-
-        <div className="button-container">
-          <button type="submit" className="write-button">Write</button>
-        </div>
-      </form>
+      <StatusForm onSubmit={handleSubmit} />
     </Suspense>
+  );
+}
+
+function StatusForm({ onSubmit }: { onSubmit: (evt: React.FormEvent, statusParam: 'Not Started' | 'In Progress' | 'Done') => void }) {
+  const searchParams = useSearchParams(); // Ensure this import is included
+  const statusParam = searchParams.get('status') as 'Not Started' | 'In Progress' | 'Done' || 'Not Started';
+
+  return (
+    <form onSubmit={(evt) => onSubmit(evt, statusParam)}>
+      <div className="form-group">
+        <label htmlFor="title" className="form-label">ToDo</label>
+        <input type="text" id="title" name="title" className="input-field" placeholder="할일을 작성해주세요" />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="content" className="form-label">Detail</label>
+        <textarea id="content" name="content" className="textarea-field" placeholder="상세 내용"></textarea>
+      </div>
+
+      <div className="button-container">
+        <button type="submit" className="write-button">Write</button>
+      </div>
+    </form>
   );
 }
