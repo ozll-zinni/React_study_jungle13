@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { postAtom } from "../atom";
 import { Post } from "@/app/atom";
 import { v4 as uuidv4 } from 'uuid';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 
 export default function Create() {
   const router = useRouter();
@@ -19,7 +19,12 @@ export default function Create() {
     const content = (target.elements.namedItem('content') as HTMLTextAreaElement).value;
 
     if (title.length < 10) {
-      alert(`${Error}제목은 10글자 이상이어야 합니다.`);
+      alert("제목은 10글자 이상이어야 합니다.");
+      return;
+    }
+
+    if (!content) {
+      alert("상세 내용을 작성해주세요.");
       return;
     }
 
@@ -29,7 +34,7 @@ export default function Create() {
       title,
       content,
       created_at: createdDate,
-      status: statusParam, // 전달된 쿼리 파라미터에서 상태를 가져옴
+      status: statusParam,
     };
 
     setPost((prevPosts) => [...prevPosts, newPost]);
@@ -46,23 +51,57 @@ export default function Create() {
 }
 
 function StatusForm({ onSubmit }: { onSubmit: (evt: React.FormEvent, statusParam: 'Not Started' | 'In Progress' | 'Done') => void }) {
-  const searchParams = useSearchParams(); // Ensure this import is included
+  const searchParams = useSearchParams();
   const statusParam = searchParams.get('status') as 'Not Started' | 'In Progress' | 'Done' || 'Not Started';
 
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  const handleAlert = (evt: React.FormEvent) => {
+    evt.preventDefault();
+  
+    if (!title && !content) {
+      alert("모든 필드를 작성해 주세요.");
+    } else if (!title) {
+      alert("제목을 작성해 주세요.");
+    } else if (!content) {
+      alert("상세 내용을 작성해 주세요.");
+    } else {
+      onSubmit(evt, statusParam);
+    }
+  };
+
   return (
-    <form onSubmit={(evt) => onSubmit(evt, statusParam)}>
+    <form onSubmit={handleAlert}>
       <div className="form-group">
         <label htmlFor="title" className="form-label">ToDo</label>
-        <input type="text" id="title" name="title" className="input-field" placeholder="할일을 작성해주세요" />
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          className="input-field" 
+          placeholder="할일을 작성해주세요" 
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
       </div>
       
       <div className="form-group">
         <label htmlFor="content" className="form-label">Detail</label>
-        <textarea id="content" name="content" className="textarea-field" placeholder="상세 내용"></textarea>
+        <textarea 
+          id="content" 
+          name="content" 
+          className="textarea-field" 
+          placeholder="상세 내용" 
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
       </div>
 
       <div className="button-container">
-        <button type="submit" className="write-button">Write</button>
+        <button type="submit" className="write-button">
+          Write
+        </button>
       </div>
     </form>
   );
