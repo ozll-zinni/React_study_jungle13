@@ -1,11 +1,31 @@
+// src/app/page.tsx
 'use client';
 
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { postAtom } from './atom';
+import { useEffect } from 'react';
 
 export default function Home() {
-  const [posts] = useAtom(postAtom);
+  const [posts, setPosts] = useAtom(postAtom);
+
+  // JSON 파일에서 데이터를 가져오는 함수
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('/db.json'); // public 디렉토리의 db.json 파일 경로
+      const data = await response.json();
+      setPosts(data.posts); // 가져온 데이터를 Jotai 상태로 설정
+    } catch (error) {
+      console.error('Failed to load posts:', error);
+    }
+  };
+
+  useEffect(() => {
+    // posts가 비어 있을 때만 fetch 실행
+    if (!posts || posts.length === 0) {
+      fetchPosts();
+    }
+  }, [posts, setPosts]);
 
   return (
     <div className="space-y-4">
