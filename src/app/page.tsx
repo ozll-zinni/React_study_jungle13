@@ -3,23 +3,9 @@
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { postAtom } from './atom';
-import { useEffect } from 'react';
 
 export default function Home() {
-  const [posts, setPosts] = useAtom(postAtom);
-
-  // JSON 파일에서 데이터를 불러오는 함수
-  const fetchPosts = async () => {
-    const response = await fetch('/db.json'); // public 디렉토리의 db.json 파일 경로
-    const data = await response.json();
-    setPosts(data.posts); // 가져온 데이터로 postAtom 설정
-  };
-
-  useEffect(() => {
-    if (!posts || posts.length === 0) {
-      fetchPosts(); // posts가 없을 때만 fetch 실행
-    }
-  }, [posts, setPosts]);
+  const [posts] = useAtom(postAtom);
 
   return (
     <div className="space-y-4">
