@@ -24,8 +24,7 @@ export default function Control() {
         router.push("/");
         router.refresh();
       } catch (error) {
-        console.error("Delete failed:", error);
-        alert("게시물 삭제에 실패했습니다. 다시 시도해 주세요.");
+        alert(`${Error}게시물 삭제에 실패했습니다. 다시 시도해 주세요.`);
       }
     }
   };

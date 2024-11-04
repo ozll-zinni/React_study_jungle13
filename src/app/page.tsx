@@ -16,7 +16,6 @@ export default function Home() {
       const data = await response.json();
       setPosts(data.posts);
     } catch (error) {
-      console.error('Failed to load posts:', error);
     }
   };
 

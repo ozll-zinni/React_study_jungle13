@@ -19,7 +19,7 @@ export default function Create() {
     const content = (target.elements.namedItem('content') as HTMLTextAreaElement).value;
 
     if (title.length < 10) {
-      alert("제목은 10글자 이상이어야 합니다.");
+      alert(`${Error}제목은 10글자 이상이어야 합니다.`);
       return;
     }
 

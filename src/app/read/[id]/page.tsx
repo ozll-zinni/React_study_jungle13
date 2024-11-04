@@ -31,8 +31,7 @@ export default function Read() {
         // 목록 페이지로 이동
         router.push('/');
       } catch (error) {
-        console.error('Error deleting post:', error);
-        alert('삭제 중 오류가 발생했습니다.');
+        alert(`${Error}삭제 중 오류가 발생했습니다.`);
       }
     }
   };
